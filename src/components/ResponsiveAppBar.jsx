@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,12 +13,14 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
 const pages = [
-  { text: 'catalog', href: '/catalog' },
-  { text: 'favorite', href: '/favorite' },
+  { link: 'catalog', href: '/catalog' },
+  { link: 'favorite', href: '/favorite' },
 ];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,6 +54,7 @@ const ResponsiveAppBar = () => {
             </IconButton>
             <Menu
               id="menu-appbar"
+              variant='menu'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
@@ -68,8 +72,14 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
-                  {page.text}
+                <MenuItem
+                  key={page.link}
+                  onClick={() => {
+                    navigate(page.href);
+                    handleCloseNavMenu();
+                  }}
+                >
+                  {page.link}
                 </MenuItem>
               ))}
             </Menu>
@@ -83,13 +93,15 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page.text}
-                variant="text"
-                href={page.href}
-                onClick={handleCloseNavMenu}
+                key={page.link}
+                variant="link"
+                onClick={() => {
+                  navigate(page.href);
+                  handleCloseNavMenu();
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page.text}
+                {page.link}
               </Button>
             ))}
           </Box>
