@@ -22,4 +22,20 @@ export default class Api {
       console.log('Can not get parts!', err);
     }
   }
+
+  async deletePart(id) {
+    try {
+      const response = await fetch(
+        `${this.catalogURL}/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'RecarSecretTokenOMG'
+          }
+        });
+      if (!response.ok) throw Error(response.statusText);
+    } catch (err) {
+      console.log('Can not delete part!', err);
+    }
+  }
+
 }

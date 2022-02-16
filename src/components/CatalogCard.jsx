@@ -27,7 +27,7 @@ const CatalogCard = ({...props}) => {
           </Avatar>
         }
         action={
-          <IconButton>
+          <IconButton onClick={() => props.deletePart(props.id)}>
             <DeleteOutlinedIcon />
           </IconButton>
         }

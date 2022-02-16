@@ -16,6 +16,13 @@ const Catalog = () => {
     setParts(parts);
   }
 
+  const delPart = async (id) => {
+    const api = new Api();
+    await api.deletePart(id);
+    const newParts = parts.filter((part) => part._id !== id)
+    setParts(newParts);
+  }
+
   function getDate(part) {
     return new Date(part.updatedAt).toDateString();
   }
@@ -34,6 +41,7 @@ const Catalog = () => {
         {parts.map((part) => (
           <Grid item key={part._id} xs={12} sm={6} md={4} xl={3}>
             <CatalogCard 
+              id={part._id}
               name={part.name} 
               date={getDate(part)}
               manufacture={part.manufacturer}
@@ -41,6 +49,7 @@ const Catalog = () => {
               year={part.year}
               color={part.color}
               price={part.price}
+              deletePart={delPart}
           />
           </Grid>
         ))}
