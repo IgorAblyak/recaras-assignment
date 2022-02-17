@@ -14,7 +14,7 @@ export default class Api {
             'Authorization': 'RecarSecretTokenOMG'
           }
         });
-      if (!response.ok) throw Error(response.statusText);
+      if (!response.ok) throw Error(response.message);
       const parts = await response.json();
 
       return parts.data;
@@ -32,9 +32,29 @@ export default class Api {
             'Authorization': 'RecarSecretTokenOMG'
           }
         });
-      if (!response.ok) throw Error(response.statusText);
+      if (!response.ok) throw Error(response.message);
     } catch (err) {
       console.log('Can not delete part!', err);
+    }
+  }
+
+  async addPart(body) {
+    try {
+      const response = await fetch(
+        `${this.catalogURL}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'RecarSecretTokenOMG'
+          },
+          body: JSON.stringify({...body})
+        });
+      if (!response.ok) throw Error(response.message);
+      const part = await response.json();
+
+      return part.data;
+    } catch (err) {
+      console.log('Can not add part!', err);
     }
   }
 
