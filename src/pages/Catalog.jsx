@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
 import Api from "../API/API";
 import CatalogCard from "../components/CatalogCard";
-import ModalWin from "../components/ModalWin";
+import CreatePartModal from "../components/CreatePartModal";
 
 const Catalog = () => {
   const [parts, setParts] = useState([]);
@@ -28,10 +28,25 @@ const Catalog = () => {
     setParts(newParts);
   }
 
-  const addPart = async (body) => {
+  const addPart = async (item) => {
     const api = new Api();
-    const part = await api.addPart(body);
+    const part = await api.addPart(item);
     setParts([...parts, part]);
+  }
+
+  const updateItemParts = (id, item) => {
+    return parts.map((part) => {
+      if(part._id === id) {
+        Object.assign(part, item);
+      }
+      return part;
+    })
+  }
+
+  const updatePart = async (id, item) => {
+    const api = new Api();
+    await api.updatePart(id, item);
+    setParts(updateItemParts(id, item));
   }
 
   const getDate = (part) => {
@@ -64,6 +79,7 @@ const Catalog = () => {
               color={part.color}
               price={part.price}
               deletePart={delPart}
+              updatePart={updatePart}
           />
           </Grid>
         ))}
@@ -84,7 +100,7 @@ const Catalog = () => {
           <AddIcon />
         </Fab>
       </Tooltip>
-      <ModalWin 
+      <CreatePartModal 
         open={open} 
         closeModal={handleCloseModal}
         addPart={addPart}

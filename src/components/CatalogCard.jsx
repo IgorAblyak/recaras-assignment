@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
@@ -15,9 +15,16 @@ import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import EuroOutlinedIcon from '@mui/icons-material/EuroOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Car from '../../src/assets/img/bmw.jpg';
+import UpdatePartModal from './updatePartModal';
 
 const CatalogCard = ({...props}) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+
   return (
     <Card elevation={3}>
       <CardHeader
@@ -42,38 +49,50 @@ const CatalogCard = ({...props}) => {
       />
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <List>
-          <ListItemButton>
+          <ListItem>
             <ListItemIcon>
               <BusinessOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={props.manufacture} />
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemIcon>
               <DirectionsCarFilledOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={props.model} />
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemIcon>
               <AccessTimeOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={props.year} />
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemIcon>
               <ColorLensOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={props.color} />
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem
+            secondaryAction={
+              <IconButton edge="end" onClick={handleOpenModal}>
+                <EditOutlinedIcon />
+              </IconButton>
+            }
+          >
             <ListItemIcon>
               <EuroOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={`${props.price}€`} />
-          </ListItemButton>
+          </ListItem>
         </List>
       </Box>
+      <UpdatePartModal 
+        open={open} 
+        props={props}
+        closeModal={handleCloseModal}
+        updatePart={props.updatePart}
+      />
     </Card>
   );
 };

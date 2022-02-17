@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function ModalWin({...props}) {
+export default function CreatePartModel({...props}) {
   const [color, setColor] = useState('');
   const [part, setPart] = useState('');
   const [price, setPrice] = useState('');

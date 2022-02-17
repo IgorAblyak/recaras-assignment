@@ -38,7 +38,7 @@ export default class Api {
     }
   }
 
-  async addPart(body) {
+  async addPart(item) {
     try {
       const response = await fetch(
         `${this.catalogURL}`, {
@@ -47,7 +47,7 @@ export default class Api {
             'Content-Type': 'application/json',
             'Authorization': 'RecarSecretTokenOMG'
           },
-          body: JSON.stringify({...body})
+          body: JSON.stringify({...item})
         });
       if (!response.ok) throw Error(response.message);
       const part = await response.json();
@@ -55,6 +55,26 @@ export default class Api {
       return part.data;
     } catch (err) {
       console.log('Can not add part!', err);
+    }
+  }
+
+  async updatePart(id, item) {
+    try {
+      const response = await fetch(
+        `${this.catalogURL}/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'RecarSecretTokenOMG'
+          },
+          body: JSON.stringify({...item})
+        });
+      if (!response.ok) throw Error(response.message);
+      const part = await response.json();
+
+      return part.data;
+    } catch (err) {
+      console.log('Can not update part!', err);
     }
   }
 
