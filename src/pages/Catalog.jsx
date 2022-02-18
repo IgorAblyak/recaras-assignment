@@ -6,11 +6,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Api from "../API/API";
 import CatalogCard from "../components/CatalogCard";
 import CreatePartModal from "../components/CreatePartModal";
+import SortSelect from "../components/SortSelect";
 
 const Catalog = () => {
   const [parts, setParts] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const [valueSort, setValueSort] = useState('');
+  
   useEffect(() => {
     getParts();
   }, []);
@@ -20,20 +22,20 @@ const Catalog = () => {
     const parts = await api.getParts();
     setParts(parts);
   }
-
+  
   const delPart = async (id) => {
     const api = new Api();
     await api.deletePart(id);
     const newParts = parts.filter((part) => part._id !== id)
     setParts(newParts);
   }
-
+  
   const addPart = async (item) => {
     const api = new Api();
     const part = await api.addPart(item);
     setParts([...parts, part]);
   }
-
+  
   const updateItemParts = (id, item) => {
     return parts.map((part) => {
       if(part._id === id) {
@@ -42,20 +44,25 @@ const Catalog = () => {
       return part;
     })
   }
-
+  
   const updatePart = async (id, item) => {
     const api = new Api();
     await api.updatePart(id, item);
     setParts(updateItemParts(id, item));
   }
 
+  const sortParts = (value) => {
+    setValueSort(value);
+    setParts([...parts].sort((a, b) => a[value].localeCompare(b[value])));
+  }
+  
   const getDate = (part) => {
     return new Date(part.updatedAt).toDateString();
   }
-
+  
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
-
+  
   return (
     <Container maxWidth='xl'>
       <Typography
@@ -66,6 +73,10 @@ const Catalog = () => {
         fontWeight={'bold'}
       >Catalog Parts:
       </Typography>
+      <SortSelect 
+        value={valueSort}
+        onChange={sortParts}
+      />
       <Grid container mt={2} rowSpacing={1} columnSpacing={2}>
         {parts.map((part) => (
           <Grid item key={part._id} xs={12} sm={6} md={4} xl={3}>
