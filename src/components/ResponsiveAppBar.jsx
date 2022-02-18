@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
 const pages = [
-  { link: 'catalog', href: '/catalog' },
+  { link: 'catalog', href: '/' },
   { link: 'favorite', href: '/favorite' },
 ];
 

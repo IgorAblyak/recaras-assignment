@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function UpdatePartModal({...props}) {
+export default function UpdatePartModal({ ...props }) {
   const propsFromCard = props.props;
   const [color, setColor] = useState(propsFromCard.color);
   const [part, setPart] = useState(propsFromCard.name);
@@ -26,7 +26,7 @@ export default function UpdatePartModal({...props}) {
   const [prod, setProd] = useState(propsFromCard.manufacture);
   const [model, setModel] = useState(propsFromCard.model);
   const [year, setYear] = useState(propsFromCard.year);
-  
+
   const updatePart = (e) => {
     e.preventDefault();
     const changePart = {
@@ -36,10 +36,10 @@ export default function UpdatePartModal({...props}) {
       manufacturer: prod,
       model: model,
       year: year,
-    }
+    };
     props.updatePart(propsFromCard.id, changePart);
     props.closeModal();
-  }
+  };
 
   return (
     <div>
@@ -54,19 +54,20 @@ export default function UpdatePartModal({...props}) {
       >
         <Fade in={props.open}>
           <Stack
-           sx={style} 
-           component='form' 
-           spacing={2} 
-           noValidate 
-           autoComplete="off"
+            sx={style}
+            component="form"
+            spacing={2}
+            noValidate
+            autoComplete="off"
           >
             <Typography
-              variant='h3'
-              color='primary'
-              align='center'
+              variant="h3"
+              color="primary"
+              align="center"
               mb={3}
               fontWeight={'bold'}
-            >Fill the gap:
+            >
+              Fill the gap:
             </Typography>
             <TextField
               value={part}
@@ -98,11 +99,8 @@ export default function UpdatePartModal({...props}) {
               onChange={(e) => setPrice(e.target.value)}
               label="Price"
             />
-            <Button 
-              type='submit' 
-              variant="outlined"
-              onClick={updatePart}
-            >Update
+            <Button type="submit" variant="outlined" onClick={updatePart}>
+              Update
             </Button>
           </Stack>
         </Fade>
