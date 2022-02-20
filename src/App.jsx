@@ -8,6 +8,7 @@ import Favorite from './pages/Favorite';
 
 const App = () => {
 
+  
   return (
     <React.Fragment>
       <CssBaseline />

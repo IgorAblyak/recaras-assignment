@@ -9,21 +9,45 @@ import CreatePartModal from '../components/CreatePartModal';
 import SortSelect from '../components/SortSelect';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { debounce } from '@mui/material';
 
 const Catalog = () => {
   const [parts, setParts] = useState([]);
   const [open, setOpen] = useState(false);
   const [valueSort, setValueSort] = useState('');
-  const [valueRange, setValueRange] = useState([10, 50]);
+  const [valueRange, setValueRange] = useState([0, 100]);
+
+  const setLocalStorage = (name, value) => {
+    console.log(value);
+    localStorage.setItem(name, JSON.stringify(value));
+  }
+
+  const getLocalStorage = () => {
+    if (localStorage.getItem('range')) {
+      const parseValue = JSON.parse(localStorage.getItem('range'));
+      console.log('get- ', parseValue)
+      setValueRange(parseValue);
+    }
+  }
 
   useEffect(() => {
-    getParts();
+    getLocalStorage();
   }, []);
+
+  useEffect(() => {
+    getParts().then((parts) => {
+      const [a, b] = valueRange;
+      setParts(parts.filter(
+        (part) => part.price >= a && part.price <= b
+      ))
+    });
+    return setLocalStorage('range', valueRange);
+  }, [valueRange]);
 
   const getParts = async () => {
     const api = new Api();
     const parts = await api.getParts();
-    setParts(parts);
+    return parts;
   };
 
   const delPart = async (id) => {
@@ -59,18 +83,9 @@ const Catalog = () => {
     setParts([...parts].sort((a, b) => a[value].localeCompare(b[value])));
   };
 
-  const changeRange = (event, newRange) => {
+  const changeRange = debounce((event, newRange) => {
     setValueRange(newRange);
-    const [a, b] = valueRange;
-    const range = b - a;
-    if (range === 0) {
-      setParts(parts);
-    }
-    const filterRange = [...parts].filter(
-      (part) => part.price >= a && part.price <= b
-    );
-    setParts(filterRange);
-  };
+  }, 500);
 
   const getDate = (part) => {
     return new Date(part.updatedAt).toDateString();
