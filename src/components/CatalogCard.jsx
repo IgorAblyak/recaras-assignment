@@ -30,8 +30,9 @@ const CatalogCard = ({ ...props }) => {
   const [checked, setChecked] = useState(false);
 
   const favoriteChecked = (e) => {
-    setChecked(e.target.checked);
-  };
+    const valueChecked = e.target.checked;
+    setChecked(valueChecked);
+  }
 
   return (
     <Card elevation={3}>

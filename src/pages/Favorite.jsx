@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Container } from '@mui/material';
 
-const Favorite = () => {
+const Favorite = ({ favoriteParts }) => {
   return (
     <Container maxWidth="xl">
       <Typography

@@ -7,25 +7,22 @@ import Api from '../API/API';
 import CatalogCard from '../components/CatalogCard';
 import CreatePartModal from '../components/CreatePartModal';
 import SortSelect from '../components/SortSelect';
-import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { debounce } from '@mui/material';
 
-const Catalog = () => {
+const Catalog = ({ setFavoriteParts }) => {
   const [parts, setParts] = useState([]);
   const [open, setOpen] = useState(false);
   const [valueSort, setValueSort] = useState('');
   const [valueRange, setValueRange] = useState([0, 100]);
 
   const setLocalStorage = (name, value) => {
-    console.log(value);
     localStorage.setItem(name, JSON.stringify(value));
   }
 
   const getLocalStorage = () => {
     if (localStorage.getItem('range')) {
       const parseValue = JSON.parse(localStorage.getItem('range'));
-      console.log('get- ', parseValue)
       setValueRange(parseValue);
     }
   }
@@ -105,51 +102,43 @@ const Catalog = () => {
       >
         Catalog Parts:
       </Typography>
-      <Box
-        component="div"
-        sx={{
-          width: '30%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+      <Grid
+        container
+        justifyContent="space-between"
+        mt={2}
+        columnSpacing={4}
       >
-        <SortSelect value={valueSort} onChange={sortParts} />
-        <Box
-          component="div"
-          sx={{
-            width: '40%',
-            display: 'flex',
-            flecDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            component="span"
-            color="primary"
-            align="center"
-            mr={3}
-            fontWeight={'bold'}
-          >
-            Price filter:
-          </Typography>
-          <Slider
-            value={valueRange}
-            onChange={changeRange}
-            valueLabelDisplay="auto"
-            min={0}
-            max={100}
-            step={1}
-            sx={{
-              width: '300px',
-            }}
-          />
-        </Box>
-      </Box>
+        <Grid item xs={4} sm={4} md={4} xl={4}>
+          <SortSelect value={valueSort} onChange={sortParts} />
+        </Grid>
+        <Grid container direction="column" xs={4} sm={4} md={4} xl={3}>
+          <Grid item>
+            <Typography
+              component="div"
+              color="primary"
+              align="center"
+              fontWeight={'bold'}
+            >
+              Price filter:
+            </Typography>
+          </Grid>
+          <Grid item xl={2}>
+            <Slider
+              value={valueRange}
+              onChange={changeRange}
+              valueLabelDisplay="auto"
+              min={0}
+              max={100}
+              step={1}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid container mt={2} rowSpacing={1} columnSpacing={2}>
         {parts.map((part) => (
           <Grid item key={part._id} xs={12} sm={6} md={4} xl={3}>
             <CatalogCard
+              parts={parts}
               id={part._id}
               name={part.name}
               date={getDate(part)}
